@@ -1,10 +1,13 @@
-import os
 from dotenv import load_dotenv
+import os
 
-# Load the .env file
-load_dotenv()
+# Force-read directly from the file, bypassing os.environ cache
+load_dotenv(dotenv_path=".env", override=True)
 
-# Access the variable
-password = os.getenv("GOOGLE_API_KEY")
-
-print(f"this is the password {password}")
+# Double-check by reading the file directly
+from dotenv import dotenv_values
+config = dotenv_values(".env")
+print("From file directly:", config.get("GOOGLE_API_KEY"))
+print("From os.getenv:", os.getenv("GOOGLE_API_KEY"))
+with open(".env") as f:
+       print(f.read())
